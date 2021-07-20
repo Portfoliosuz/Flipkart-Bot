@@ -11,7 +11,7 @@ users = {}
 @bot.message_handler(commands=['start'])
 def start(message):
     id = message.chat.id
-    img_company = "AgACAgIAAxkBAAEK3Jlg8Y3oYl3gnv70_VXXPxtd2oZI6AACw7UxGyaxkUs8OhFDgx_g_gEAAwIAA3kAAyAE"
+    img_company = "AgACAgIAAxkBAAEK6V1g9retNSgpkFJEgfmLmcQ565GcCwACZbIxGzNduUvfxlBIy9uU9wEAAwIAA3gAAyAE"
     text = f"<b>{message.from_user.first_name}</b>, Welcome to "
     text += "Telegram Bot of <a href = 'https://flipkart.com'>Flipkart.com</a>"
     text += "\n\nEnter the product name👇\nExample: `laptop`"
@@ -34,21 +34,21 @@ def text(message):
     id = message.chat.id
     send = bot.send_message(id, "<code>Loading...</code>",parse_mode="html")
     contents = {}
-    contents["search_text"] = message.text
-    contents["results"] = get_pages_count(message.text)
-    contents[1] = get(0,message.text,1)
-    users[id] = contents
-    bot.delete_message(id,send.message_id)
-    if contents:
+    try:
+        contents["search_text"] = message.text
+        contents["results"] = get_pages_count(message.text)
+        contents[1] = get(0,message.text.lower(),1)
+        users[id] = contents
         target = bot.send_photo(id, contents[1][1]["image"], caption=get_reply(contents,contents[1][1],1,1),parse_mode="Markdown",reply_markup=keyboards.btn(contents,1,1))
-    else:
+
+    except:
         bot.send_photo(id,
-                       "AgACAgIAAxkBAAEK3Mxg8Zc_XW9pqsau1aZD76nrsEFupwAC0LUxGyaxkUtj4QvJbrFMbAEAAwIAA3MAAyAE",
+                       "AgACAgIAAxkBAAEK6WVg9ri3qIKo1kQiUUo4tnQrj7G0rAACZrIxGzNduUt_1h0oBv_V0AEAAwIAA20AAyAE",
                        caption="<b>Sorry, no results found!</b>",
                        parse_mode="html",
                        )
+    bot.delete_message(id, send.message_id)
 
-print("Starting...")
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
     global target
@@ -65,4 +65,5 @@ def callback(call):
             call_back(bot, call, target, types, contents, keyboards)
     except:
         bot.send_message(call.message.chat.id, "/start")
+print("Starting...")
 bot.polling(interval=1)
