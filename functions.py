@@ -1,7 +1,7 @@
-# call data call.page_id,content_id
-
+import time
+from main import get
+from config import numbers
 def get_reply(contents,content, page_id, content_id):
-    numbers = {0:"0️⃣", 1:"1️⃣",2:"2️⃣",3:"3️⃣",4:"4️⃣",5:"5️⃣",6:"6️⃣",7:"7️⃣",8:"8️⃣",9:"9️⃣"}
     page_id_icon = ""
     for i in str(page_id):
         page_id_icon += numbers[int(i)]
@@ -27,24 +27,34 @@ def call_back(bot, call, target, types, contents, keyboards):
         if 1 >= content_id:
             if page_id > 1:
                 page_id -= 1
+                send = bot.send_message(call.message.chat.id, "<code>Loading...</code>", parse_mode = "html")
+                contents[page_id] = get(0,contents["search_text"],page_id)
+                bot.delete_message(call.message.chat.id, send.message_id)
                 content_id = len(contents[page_id].keys())
             else:
                 content_id = 2
         content = contents[page_id][content_id - 1]
         text = get_reply(contents,content, page_id, content_id - 1)
         media = types.InputMedia(type='photo', media=content["image"], caption=text,parse_mode="Markdown")
+        time.sleep(1)
         target = bot.edit_message_media(media, call.message.chat.id, target.message_id, reply_markup=keyboards.btn(contents, page_id,content_id -1))
+        time.sleep(1)
     if call_ == "RIGHT":
         if contents_count <= content_id:
             if page_id < results:
                 page_id += 1
+                send = bot.send_message(call.message.chat.id, "<code>Loading...</code>", parse_mode = "html")
+                contents[page_id] = get(0,contents["search_text"],page_id)
+                bot.delete_message(call.message.chat.id, send.message_id)
                 content_id = 0
             else:
                 content_id = contents_count
         content = contents[page_id][content_id + 1]
         text = get_reply(contents,content, page_id, content_id+1)
         media = types.InputMedia(type='photo', media=content["image"], caption=text,parse_mode="Markdown")
+        time.sleep(1)
         target = bot.edit_message_media(media, call.message.chat.id,target.message_id, reply_markup=keyboards.btn(contents, page_id,content_id +1))
+        time.sleep(1)
     print(call.data)
 
 

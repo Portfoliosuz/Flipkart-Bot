@@ -1,12 +1,13 @@
 from bs4 import BeautifulSoup as bs
 import requests
 class Scrape:
-    print("Scrapping...")
     def __init__(self, url, *query):
         self.url = url.format(*query)
+
     def get_url(self):
         return self.url
     def get_code(self):
+        print("Scrapping...")
         html = requests.get(self.url)
         if html.status_code == 200:
             return html.text
@@ -14,9 +15,10 @@ class Scrape:
     def get_html(self):
         if self.get_code():
             page = bs(self.get_code(),'html.parser')
+            print("Scrapped:)")
             return page
         else:
-            print("Srapped:)")
+            print("Not Scrapped:(")
 
 def _(from_ = "INR",to_ = "USD",amount_= 1,url = "https://www.xe.com/currencyconverter/convert/?Amount={}&From={}&To={}"):
     try:

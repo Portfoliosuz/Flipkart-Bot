@@ -6,7 +6,7 @@ def btn(contents, page_id, content_id):
     keys = contents.keys()
 
     if len(contents[page_id].keys())-1 <= content_id:
-        if page_id +1 in keys:
+        if page_id +1 <= contents["results"]:
             markup.add(
                 types.InlineKeyboardButton(
                     text="⬅️",
@@ -60,7 +60,7 @@ def btn(contents, page_id, content_id):
 def change_page_btn(contents):
     markup = types.InlineKeyboardMarkup(row_width=5)
     contents_ = contents["results"] +1
-    row = contents_//5
+    row = (contents_-1)//5
     column = contents_ - 5*row -1
     a = 1
     for i in range(1,row +1):
