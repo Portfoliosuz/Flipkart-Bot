@@ -65,4 +65,4 @@ def callback(call):
             call_back(bot, call, target, types, contents, keyboards)
     except:
         bot.send_message(call.message.chat.id, "/start")
-bot.polling()
+bot.polling(interval=1)

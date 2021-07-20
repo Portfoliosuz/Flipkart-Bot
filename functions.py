@@ -36,9 +36,9 @@ def call_back(bot, call, target, types, contents, keyboards):
         content = contents[page_id][content_id - 1]
         text = get_reply(contents,content, page_id, content_id - 1)
         media = types.InputMedia(type='photo', media=content["image"], caption=text,parse_mode="Markdown")
-        time.sleep(1)
+
         target = bot.edit_message_media(media, call.message.chat.id, target.message_id, reply_markup=keyboards.btn(contents, page_id,content_id -1))
-        time.sleep(1)
+
     if call_ == "RIGHT":
         if contents_count <= content_id:
             if page_id < results:
@@ -52,9 +52,9 @@ def call_back(bot, call, target, types, contents, keyboards):
         content = contents[page_id][content_id + 1]
         text = get_reply(contents,content, page_id, content_id+1)
         media = types.InputMedia(type='photo', media=content["image"], caption=text,parse_mode="Markdown")
-        time.sleep(1)
+
         target = bot.edit_message_media(media, call.message.chat.id,target.message_id, reply_markup=keyboards.btn(contents, page_id,content_id +1))
-        time.sleep(1)
+
     print(call.data)
 
 
