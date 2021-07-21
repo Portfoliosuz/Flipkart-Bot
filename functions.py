@@ -40,7 +40,7 @@ def call_back(bot, call, target, types, contents, keyboards):
     if call_ == "RIGHT":
         if contents_count <= content_id:
             if page_id < results:
-                del contents["page_id"]
+                del contents[page_id]
                 page_id += 1
                 send = bot.send_message(call.message.chat.id, "<code>Loading...</code>", parse_mode = "html")
                 contents[page_id] = get(0,contents["search_text"],page_id)
