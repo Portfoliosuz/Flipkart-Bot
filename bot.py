@@ -59,6 +59,7 @@ def callback(call):
         if call.data[:3] == "?p=":
             page_id = int(call.data[3:])
             bot.delete_message(id,change.message_id)
+            contents[page_id] = get(0,contents["search_text"], page_id)
             text = get_reply(contents, contents[page_id][1], page_id, 1)
             target = bot.send_photo(id, contents[page_id][1]["image"],caption=text,reply_markup=keyboards.btn(contents,page_id,1),parse_mode="Markdown")
         else:
